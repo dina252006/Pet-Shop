@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--primary meta tag-->
+    <title>Zoo - Hight Quality Pet Food</title>
+    <meta name="title" content="Kitter - Hight Quality Pet Food">
+    <meta name="description" content="This is an eCommerce html template made by codewithsadee">
+    <!--custom css link-->
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <!--google font link-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bangers&family=Carter+One&family=Nunito+Sans:wght@400;700&display=swap"
+        rel="stylesheet">
+    <!--preload images-->
+    <link rel="preload" as="image" href="./assets/images/hero-banner.jpg">
+</head>
+
+<body id="top">
+    <!--#HEADER-->
+    <header class="header" data-header>
+        <div class="container">
+            <button class="nav-toggle-btn" aria-label="toggle manu" data-nav-toggler>
+                <ion-icon name="menu-outline" aria-hidden="true" class="menu-icon"></ion-icon>
+                <ion-icon name="close-outline" aria-label="true" class="close-icon"></ion-icon>
+            </button>
+            <a href="#" class="logo">Zoo</a>
+            <nav class="navbar" data-navbar>
+                <ul class="navbar-list">
+                    <li class="navbar-item">
+                        <a href="index.html" class="navbar-link" data-nav-link>Home</a>
+                    </li>
+                    <li class="navbar-item">
+                        <a href="index.html#shop" class="navbar-link" data-nav-link>Shop</a>
+                    </li>
+                    <li>
+                        <a href="products.html" class="navbar-link" data-nav-link>Products</a>
+                    </li>
+                    <li>
+                        <a href="faq.html" class="navbar-link" data-nav-link>FAQ</a>
+                    </li>
+                    <button id="show-time-btn" class="action-btn">Time</button>
+                    <div id="time-display" class="time-display"></div>
+                </ul>
+                <a href="#" class="navbar-action-btn">Log In</a>
+            </nav>
+            <div class="header-actions"> 
+                <!-- Кнопка пользователя для открытия модального окна входа/регистрации -->
+                <button class="action-btn user-btn3" id="user-btn3" aria-label="User">
+                    <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
+                </button>
+            
+                <!-- Окно регистрации -->
+                <div id="register-modal3" class="modal-overlay3" style="display: none;">
+                    <div class="modal-box3">
+                        <span id="close-register3" class="modal-close3">&times;</span>
+                        <h2>Register</h2>
+                        <form id="register-form3">
+                            <label for="username3">Username</label>
+                            <input type="text" id="username3" name="username3" required>
+                            <label for="password3">Password</label>
+                            <input type="password" id="password3" name="password3" required>
+                            <button type="submit">Register</button>
+                        </form>
+                    </div>
+                </div>
+            
+                <!-- Окно входа -->
+                <div id="login-modal" class="modal-overlay3" style="display: none;">
+                    <div class="modal-box3">
+                        <span id="close-login" class="modal-close3">&times;</span>
+                        <h2>Log In</h2>
+                        <form id="login-form">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" required>
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                            <button type="submit">Log In</button>
+                            <p id="forgot-password" style="cursor: pointer; color: blue;">Forgot Password?</p>
+                        </form>
+                    </div>
+                </div>
+            
+                <!-- Кнопка выхода -->
+                <button id="logout-btn" style="display: none;">Log Out</button>
+            
+                <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const registerModal = document.getElementById("register-modal3");
+                        const loginModal = document.getElementById("login-modal");
+                        const userBtn = document.getElementById("user-btn3");
+                        const closeRegisterBtn = document.getElementById("close-register3");
+                        const closeLoginBtn = document.getElementById("close-login");
+                        const registerForm = document.getElementById("register-form3");
+                        const loginForm = document.getElementById("login-form");
+                        const logoutBtn = document.getElementById("logout-btn");
+            
+                        // Проверка, есть ли пользователь, и обновление интерфейса
+                        function updateInterface() {
+                            const loggedInUser = localStorage.getItem("username");
+                            if (loggedInUser) {
+                                userBtn.textContent = `Привет, ${loggedInUser}`;
+                                logoutBtn.style.display = "inline-block"; // Показать кнопку выхода
+                            } else {
+                                userBtn.textContent = "User"; // Вернуть текст кнопки
+                                logoutBtn.style.display = "none"; // Скрыть кнопку выхода
+                            }
+                        }
+            
+                        // Открываем окно регистрации или входа при нажатии на кнопку пользователя
+                        userBtn.addEventListener("click", () => {
+                            const registeredUsername = localStorage.getItem("registeredUsername");
+                            if (!registeredUsername) {
+                                registerModal.style.display = "block";
+                            } else if (!localStorage.getItem("username")) {
+                                loginModal.style.display = "block";
+                            }
+                        });
+            
+                        // Закрываем модальные окна
+                        closeRegisterBtn.addEventListener("click", () => registerModal.style.display = "none");
+                        closeLoginBtn.addEventListener("click", () => loginModal.style.display = "none");
+            
+                        // Обработчик регистрации
+                        registerForm.addEventListener("submit", (e) => {
+                            e.preventDefault();
+                            const newUsername = document.getElementById("username3").value;
+                            const newPassword = document.getElementById("password3").value;
+            
+                            localStorage.setItem("registeredUsername", newUsername);
+                            localStorage.setItem("registeredPassword", newPassword);
+            
+                            alert("Регистрация прошла успешно! Теперь войдите.");
+                            registerModal.style.display = "none";
+                            loginModal.style.display = "block";
+                        });
+            
+                        // Обработчик входа
+                        loginForm.addEventListener("submit", (e) => {
+                            e.preventDefault();
+                            const loginUsername = document.getElementById("username").value;
+                            const loginPassword = document.getElementById("password").value;
+            
+                            const registeredUsername = localStorage.getItem("registeredUsername");
+                            const registeredPassword = localStorage.getItem("registeredPassword");
+            
+                            if (loginUsername === registeredUsername && loginPassword === registeredPassword) {
+                                localStorage.setItem("username", loginUsername);
+                                alert("Successful login!");
+                                loginModal.style.display = "none";
+                                updateInterface();
+                            } else {
+                                alert("Invalid username or password. Please try again.");
+                                document.getElementById("username").value = '';
+                                document.getElementById("password").value = '';
+                            }
+                        });
+            
+                        // Обработчик для "Забыли пароль?"
+                        document.getElementById("forgot-password").addEventListener("click", () => {
+                            alert("К сожалению, восстановление пароля не поддерживается. Пожалуйста, зарегистрируйте новый аккаунт.");
+                            loginModal.style.display = "none"; // Закрыть модальное окно входа
+                            registerModal.style.display = "block"; // Открыть модальное окно регистрации
+                        });
+            
+                        // Обработчик выхода
+                        logoutBtn.addEventListener("click", () => {
+                            localStorage.removeItem("username");
+                            alert("Вы вышли из системы!");
+                            updateInterface();
+                        });
+            
+                        // Инициализация интерфейса при загрузке
+                        updateInterface();
+                    });
+                </script>
+            </div>
+            
+
+
+
+
+
+    </header>
+    <main>
+        <article>
+            <!--#HERO-->
+            <section class="section hero has-bg-image" id="home" aria-label="home"
+                style="background-image: url('./assets/images/hero-banner.jpg')">
+                <div class="container">
+                    <h1 class="h1 hero-title">
+                        <span class="span">High Quality</span> Pet Food
+                    </h1>
+                    <p class="hero-text">Sale up to 40% off today</p>
+                    <a href="#" class="btn1">Shop Now</a>
+                </div>
+            </section>
+            <!--#CATEGORY-->
+            <button id="theme-toggle" aria-label="Switch Theme">Switch Theme</button>
+            <button>
+                <script>
+                    // Immediately invoked function to ensure DOM is ready before executing the script
+                    document.addEventListener("DOMContentLoaded", () => {
+                        // Check local storage for dark mode preference
+                        let darkmode = localStorage.getItem('darkmode');
+                        const themeToggleButton = document.getElementById('theme-toggle');
+
+                        // Function to enable dark mode
+                        const enableDarkmode = () => {
+                            document.body.classList.add('darkmode'); // Add dark mode class
+                            localStorage.setItem('darkmode', 'active'); // Set local storage
+                        };
+
+                        // Function to disable dark mode
+                        const disableDarkmode = () => {
+                            document.body.classList.remove('darkmode'); // Remove dark mode class
+                            localStorage.setItem('darkmode', null); // Clear local storage
+                        };
+
+                        // Initialize dark mode based on stored preference
+                        if (darkmode === "active") enableDarkmode();
+
+                        // Add event listener to the toggle button
+                        themeToggleButton.addEventListener("click", () => {
+                            darkmode = localStorage.getItem('darkmode'); // Refresh dark mode value
+                            darkmode !== "active" ? enableDarkmode() : disableDarkmode(); // Toggle mode
+                        });
+                    });
+                </script>
+            </button>
+            <!-- Основной контент страницы FAQ -->
+            <section class="faq-section">
+                <h1>Frequently Asked Questions</h1>
+
+                <div class="faq">
+                    <h3 class="faq-question">What is your return policy?</h3>
+                    <p class="faq-answer">Our return policy allows you to return products within 30 days of purchase.
+                    </p>
+                </div>
+
+                <div class="faq">
+                    <h3 class="faq-question">Do you offer international shipping?</h3>
+                    <p class="faq-answer">Yes, we offer international shipping to select countries.</p>
+                </div>
+
+                <div class="faq">
+                    <h3 class="faq-question">How can I track my order?</h3>
+                    <p class="faq-answer">You can track your order through the tracking link provided in your order
+                        confirmation email.</p>
+                </div>
+            </section>
+
+
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const faqQuestions = document.querySelectorAll(".faq-question");
+
+                    faqQuestions.forEach(question => {
+                        question.addEventListener("click", () => {
+                            const answer = question.nextElementSibling;
+                            answer.style.display = answer.style.display === "block" ? "none" : "block";
+                            question.classList.toggle("active");
+                        });
+                    });
+                });
+            </script>
+
+        </article>
+    </main>
+    <!-- #FOOTER-->
+    <footer class="footer" style="background-image: url('./assets/images/footer-bg.jpg')">
+        <div class="footer-top section">
+            <div class="container">
+                <div class="footer-brand">
+                    <a href="#" class="logo">Zoo</a>
+                    <p class="footer-text">
+                        If you have any question, please contact us at
+                        <a href="mailto:support@gmail.com" class="link">support@gmail.com</a>
+                    </p>
+                    <ul class="contact-list">
+                        <li class="contact-item">
+                            <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+                            <address class="address">
+                                Astana
+                            </address>
+                        </li>
+                        <li class="contact-item">
+                            <ion-icon name="call-outline" aria-hidden="true"></ion-icon>
+                            <a href="tel:+77761843031" class="contact-link">(+7)-776-184-30-31</a>
+                        </li>
+                    </ul>
+                    <ul class="social-list">
+                        <li>
+                            <a href="#" class="social-link">
+                                <ion-icon name="logo-facebook"></ion-icon>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="social-link">
+                                <ion-icon name="logo-twitter"></ion-icon>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="social-link">
+                                <ion-icon name="logo-pinterest"></ion-icon>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="social-link">
+                                <ion-icon name="logo-instagram"></ion-icon>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p class="copyright">
+                    &copy; 2024 Made with ♥ by <a href="#" class="copyright-link">Zhumagulova Asel & Kozhayeva Dina
+                        .</a>
+                </p>
+                <img src="./assets/images/payment.png" width="397" height="32" loading="lazy" alt="payment method"
+                    class="img">
+            </div>
+        </div>
+    </footer>
+    <script src="./assets/js/script.js" defer></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <button id="back-to-top" class="back-to-top" aria-label="Back to Top">
+        <ion-icon name="arrow-up-outline"></ion-icon>
+    </button>
+</body>
+
+</html>
